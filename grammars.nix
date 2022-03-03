@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, canopy }:
+{ lib, fetchFromGitHub, tspm }:
 # licenses: https://github.com/NixOS/nixpkgs/blob/7a9ee0a0efeb4e28a8cfc58a65c3266260177ac1/lib/licenses.nix
 [
   rec {
@@ -10,10 +10,10 @@
       rev = "a11a686303355a518b0a45dea7c77c5eebb5ec22";
       sha256 = lib.fakeSha256;
     };
-    files = canopy.defaultFiles;
+    files = tspm.defaultFiles;
     meta = with lib; {
       license = licenses.asl20;
-      maintainer = [ canopy.maintainers.the-mikedavis ];
+      maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   }
   rec {
@@ -25,10 +25,10 @@
       rev = "47c6d15c2a25df09378af9c681d0892e5c893c39";
       sha256 = lib.fakeSha256;
     };
-    files = canopy.defaultFiles;
+    files = tspm.defaultFiles;
     meta = with lib; {
       license = licenses.asl20;
-      maintainer = [ canopy.maintainers.the-mikedavis ];
+      maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   }
 ]

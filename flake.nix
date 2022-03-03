@@ -9,7 +9,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
         lib = pkgs.callPackage ./lib { };
-        grammars = pkgs.callPackage ./grammars.nix { canopy = lib; };
+        grammars = pkgs.callPackage ./grammars.nix { tspm = lib; };
         buildDefaultPackage = pkgs.runCommand "build-default-package" { } ''
           mkdir $out
           ln -s ${lib.manifest grammars}

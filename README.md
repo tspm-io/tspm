@@ -1,4 +1,4 @@
-# canopy
+# TSPM
 
 open-source package manager for tree-sitter grammars 🌳
 
@@ -19,6 +19,6 @@ The most basic feature I want is fast tarball downloads for the minimal set
 of files of a grammar (`src/` and `LICENSE*`).
 
 Another problem I'd love to solve is packaging queries. Each consumer of
-tree-sitter grammars has their own set of captures and conventions. Canopy
+tree-sitter grammars has their own set of captures and conventions. TSPM
 should allow you to download a bundle of queries flavored for your use-case
 which are tested to work with some version of a grammar.
