@@ -13,5 +13,9 @@
             ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix
           '';
         };
+        # hmm... could replace this with nix-devshell
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [ nixfmt ];
+        }
       });
 }
