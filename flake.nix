@@ -7,10 +7,9 @@
     with inputs;
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs' = import nixpkgs { inherit system; };
-        lib = pkgs'.callPackage ./lib { };
-        pkgs = pkgs' // { lib = lib // pkgs'.lib; };
-        grammars = pkgs.callPackage ./grammars.nix { };
+        pkgs = import nixpkgs { inherit system; };
+        lib = pkgs.callPackage ./lib { };
+        grammars = pkgs.callPackage ./grammars.nix { canopy = lib; };
         buildDefaultPackage = pkgs.runCommand "build-default-package" { } ''
           mkdir $out
           ln -s ${lib.manifest grammars}
@@ -27,8 +26,6 @@
         # '';
         defaultPackage = lib.manifest grammars;
         # hmm... could replace this with nix-devshell
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ nixfmt ];
-        };
+        devShell = pkgs.mkShell { buildInputs = with pkgs; [ nixfmt ]; };
       });
 }
