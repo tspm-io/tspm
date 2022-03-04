@@ -1,8 +1,8 @@
 # TSPM 🌲
 
-[![CI](https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml/badge.svg)](https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml)
+[![CI][ci-badge]](ci-file)
 
-_An open-source package manager for tree-sitter grammars_
+_An open-source [tree-sitter][tree-sitter] package manager_
 
 ### Why?
 
@@ -24,3 +24,7 @@ Another problem I'd love to solve is packaging queries. Each consumer of
 tree-sitter grammars has their own set of captures and conventions. TSPM
 should allow you to download a bundle of queries flavored for your use-case
 which are tested to work with some version of a grammar.
+
+[ci-badge]: https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml/badge.svg
+[ci-file]: https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml
+[tree-sitter]: https://github.com/tree-sitter/tree-sitter
