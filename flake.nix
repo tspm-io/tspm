@@ -10,21 +10,14 @@
         pkgs = import nixpkgs { inherit system; };
         lib = pkgs.callPackage ./lib { };
         grammars = pkgs.callPackage ./grammars.nix { tspm = lib; };
-        buildDefaultPackage = pkgs.runCommand "build-default-package" { } ''
-          mkdir $out
-          ln -s ${lib.manifest grammars}
-        '';
       in {
         checks = {
           format = pkgs.runCommand "format-check" { } ''
-            ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix
+            ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix 2&>1 | tee $out
           '';
+          tests = lib.buildAllGrammars grammars { format = "test"; };
         };
-        # defaultPackage = pkgs.runCommand "build-default-package" { } ''
-        #   mkdir $out
-        #   ln -s ${lib.manifest grammars} manifest.json
-        # '';
-        defaultPackage = lib.manifest grammars;
+        defaultPackage = lib.buildAllGrammars grammars { format = "test"; };
         # hmm... could replace this with nix-devshell
         devShell = pkgs.mkShell { buildInputs = with pkgs; [ nixfmt ]; };
       });
