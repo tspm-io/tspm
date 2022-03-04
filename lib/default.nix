@@ -1,14 +1,6 @@
 { bash, runCommand, system, tree-sitter, nodejs, stdenv, lib }: rec {
   maintainers = import ./maintainers.nix;
 
-  takeAttrs = attrs: attrset:
-    let
-      desiredAttrs = builtins.listToAttrs (builtins.map (attr: {
-        name = attr;
-        value = true;
-      }) attrs);
-    in builtins.intersectAttrs desiredAttrs attrset;
-
   # TODO:
   # - cd into subpath
   # - curry in desired ABI
@@ -17,12 +9,9 @@
     stdenv.mkDerivation rec {
       inherit system format tree-sitter language;
       pname = "grammar-${language}-${author}-${format}";
-      version = grammar.revision;
+      version = grammar.version;
 
-      src = builtins.fetchGit {
-        url = grammar.remote;
-        rev = version;
-      } // (takeAttrs [ "ref" ] grammar);
+      src = grammar.src;
 
       languageConfigJson = ./language-config.json;
 
