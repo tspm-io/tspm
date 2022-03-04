@@ -26,6 +26,9 @@
           '';
           tests = lib.buildAllGrammars grammars { format = "test"; };
         };
+        packages = {
+          wasm = lib.buildAllGrammars grammars { format = "wasm"; };
+        };
         defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
         # hmm... could replace this with nix-devshell
         devShell = pkgs.mkShell {

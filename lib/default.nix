@@ -1,4 +1,5 @@
-{ bash, runCommand, system, tree-sitter, nodejs, stdenv, lib }: rec {
+{ bash, runCommand, system, tree-sitter, nodejs, emscripten, stdenv, lib
+}: rec {
   maintainers = import ./maintainers.nix;
 
   # TODO:
@@ -13,7 +14,7 @@
       src = grammar.src;
 
       languageConfigJson = ./language-config.json;
-      buildInputs = [ tree-sitter nodejs ];
+      buildInputs = [ tree-sitter nodejs emscripten ];
       builder = ./build-grammar.sh;
     };
 
