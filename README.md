@@ -1,6 +1,8 @@
-# TSPM
+# TSPM 🌳
 
-open-source package manager for tree-sitter grammars 🌳
+[![CI](https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml/badge.svg)](https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml)
+
+_An open-source package manager for tree-sitter grammars_
 
 ### Why?
 
