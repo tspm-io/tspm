@@ -1,4 +1,4 @@
-# TSPM 🌳
+# TSPM 🌲
 
 [![CI](https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml/badge.svg)](https://github.com/the-mikedavis/tspm/actions/workflows/ci.yml)
 
