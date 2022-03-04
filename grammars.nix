@@ -9,14 +9,14 @@ tspm.formatGrammars {
       maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  erlang.the-mikedavis = tspm.buildGrammar {
-    remote = "https://github.com/the-mikedavis/tree-sitter-erlang";
-    revision = "47c6d15c2a25df09378af9c681d0892e5c893c39";
-    meta = with lib; {
-      license = licenses.asl20;
-      maintainer = [ tspm.maintainers.the-mikedavis ];
-    };
-  };
+  # erlang.the-mikedavis = tspm.buildGrammar {
+  #   remote = "https://github.com/the-mikedavis/tree-sitter-erlang";
+  #   revision = "47c6d15c2a25df09378af9c681d0892e5c893c39";
+  #   meta = with lib; {
+  #     license = licenses.asl20;
+  #     maintainer = [ tspm.maintainers.the-mikedavis ];
+  #   };
+  # };
   diff.the-mikedavis = tspm.buildGrammar {
     remote = "https://github.com/the-mikedavis/tree-sitter-diff";
     revision = "ca750e5bbc86e5716ccf4eb9e44493b14043ec4c";
