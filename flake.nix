@@ -28,6 +28,8 @@
         };
         defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
         # hmm... could replace this with nix-devshell
-        devShell = pkgs.mkShell { buildInputs = with pkgs; [ nixfmt ]; };
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [ nixfmt pkgs.tree-sitter ];
+        };
       });
 }
