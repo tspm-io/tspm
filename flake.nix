@@ -7,7 +7,15 @@
     with inputs;
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        tree-sitter-overlay = (self: super: {
+          tree-sitter = super.callPackage ./lib/tree-sitter.nix {
+            inherit (super.darwin.apple_sdk.frameworks) Security;
+          };
+        });
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ tree-sitter-overlay ];
+        };
         lib = pkgs.callPackage ./lib { };
         grammars = pkgs.callPackage ./grammars.nix { tspm = lib; };
       in {
@@ -18,7 +26,7 @@
           '';
           tests = lib.buildAllGrammars grammars { format = "test"; };
         };
-        defaultPackage = lib.buildAllGrammars grammars { format = "test"; };
+        defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
         # hmm... could replace this with nix-devshell
         devShell = pkgs.mkShell { buildInputs = with pkgs; [ nixfmt ]; };
       });

@@ -1,5 +1,13 @@
-{ bash, runCommand, system, tree-sitter, nodejs, stdenv, lib }: {
+{ bash, runCommand, system, tree-sitter, nodejs, stdenv, lib }: rec {
   maintainers = import ./maintainers.nix;
+
+  takeAttrs = attrs: attrset:
+    let
+      desiredAttrs = builtins.listToAttrs (builtins.map (attr: {
+        name = attr;
+        value = true;
+      }) attrs);
+    in builtins.intersectAttrs desiredAttrs attrset;
 
   # TODO:
   # - cd into subpath
@@ -14,8 +22,7 @@
       src = builtins.fetchGit {
         url = grammar.remote;
         rev = version;
-        ref = if builtins.hasAttr "ref" grammar then grammar.ref else "master";
-      };
+      } // (takeAttrs [ "ref" ] grammar);
 
       languageConfigJson = ./language-config.json;
 

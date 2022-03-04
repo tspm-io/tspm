@@ -9,10 +9,15 @@ unpackPhase() {
   mkdir -p "$XDG_CONFIG_HOME"/tree-sitter
   ln -s "$languageConfigJson" "$XDG_CONFIG_HOME"/tree-sitter/config.json
 
-  # TODO: npm dependencies, submodules, sub-paths
+  # TODO: npm dependencies, submodules?, sub-paths
   mkdir "$tsDir"
   cp "$src"/grammar.js "$tsDir"/
   cp "$src"/package.json "$tsDir"/
+
+  # 'src/' will be updated by 'tree-sitter generate', so we copy
+  # without preserving the mode to allow tree-sitter to write
+  # to the read-only files.
+  cp --recursive --no-preserve=mode "$src"/src "$tsDir"/src/
 
   if [[ "$format" == "test" ]]; then
     cp -r "$src"/queries "$tsDir"/queries/ || true
