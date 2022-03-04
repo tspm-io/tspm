@@ -4,19 +4,16 @@
   # TODO:
   # - cd into subpath
   # - curry in desired ABI
-  buildGrammar = grammar: language: author:
+  grammar = grammar: language: author:
     { format, ... }:
     stdenv.mkDerivation rec {
       inherit system format tree-sitter language;
       pname = "grammar-${language}-${author}-${format}";
       version = grammar.version;
-
       src = grammar.src;
 
       languageConfigJson = ./language-config.json;
-
       buildInputs = [ tree-sitter nodejs ];
-
       builder = ./build-grammar.sh;
     };
 
