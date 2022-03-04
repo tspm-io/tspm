@@ -13,7 +13,8 @@
       in {
         checks = {
           format = pkgs.runCommand "format-check" { } ''
-            ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix 2&>1 | tee $out
+            ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix
+            touch $out
           '';
           tests = lib.buildAllGrammars grammars { format = "test"; };
         };
