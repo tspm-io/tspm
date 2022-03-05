@@ -60,7 +60,7 @@ in ''
               <textarea id="code-input" style="display: none"></textarea>
             </div>
             <div id="query-container" style="">
-              <textarea id="query-input" style="display: none"></textarea>
+              <textarea id="query-input" style="display: none">(ERROR) @error</textarea>
             </div>
           </div>
 
