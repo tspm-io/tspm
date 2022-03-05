@@ -13,7 +13,7 @@ in ''
     <head>
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
       <meta charset="utf-8" />
-      <title>TSPM 🌲</title>
+      <title>TSPM · Playground</title>
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.min.css"
@@ -23,16 +23,9 @@ in ''
         href="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.18.0/clusterize.min.css"
       />
       <link
-        rel="icon"
-        type="image/png"
-        href="https://tree-sitter.github.io/tree-sitter/assets/images/favicon-32x32.png"
-        sizes="32x32"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        href="https://tree-sitter.github.io/tree-sitter/assets/images/favicon-16x16.png"
-        sizes="16x16"
+        rel="shortcut icon"
+        href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8C%B2%3C%2Ftext%3E%3C%2Fsvg%3E"
+        type="image/svg+xml"
       />
     </head>
 
