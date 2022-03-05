@@ -3,6 +3,7 @@
 This document has some general documentation on TSPM. There are more specific
 documents as well:
 
+* [adding new grammars][add-new-grammar]
 * [tips for grammar authors][tips]
 
 ### Motivation
@@ -95,3 +96,4 @@ those who wish to help me cover the costs may donate.
 [do-spaces]: https://www.digitalocean.com/blog/spaces-now-includes-cdn
 [fastly]: https://www.fastly.com/
 [tips]: ./grammar-author-tips.md
+[add-new-grammar]: ./add-new-grammar.md
