@@ -1,5 +1,5 @@
-{ bash, system, tree-sitter, nodejs, emscripten, stdenv, lib, fetchurl, linkFarm
-, callPackage, writeTextFile }: rec {
+{ system, tree-sitter, nodejs, emscripten, httplz, stdenv, lib, fetchurl, linkFarm
+, callPackage, writeTextFile, writeShellScript, runCommand }: rec {
   maintainers = import ./maintainers.nix;
 
   # TODO:
@@ -48,13 +48,32 @@
     sha256 = "sha256-QBVbxeMq3KdHwApTeYZszBP2Q7de8lL7eT8AviFbcbk=";
   };
 
+  copyFarm = name: entries:
+    let
+      copyEntry = { name, path }: ''
+        mkdir -p "$(dirname ${name})"
+        cp -r ${path} ${name}
+      '';
+      copies = builtins.map copyEntry entries;
+    in runCommand name { preferLocalBuild = true; allowSubstitutes = false; } ''
+      mkdir -p $out
+      cd $out
+      ${builtins.concatStringsSep "" copies}
+    '';
+
   buildPlayground = grammars:
     let
       playgroundHtml = writeTextFile {
         name = "tree-sitter-playground-html";
         text = callPackage ./assets/index.html.nix { inherit grammars; };
       };
-      links = [
+      entries = [
+        {
+          name = "run.sh";
+          path = writeShellScript "tree-sitter-playground-run" ''
+            ${httplz}/bin/httplz "$(dirname $0)"
+          '';
+        }
         {
           name = "tree-sitter.js";
           path = treeSitterJs;
@@ -72,5 +91,5 @@
           path = playgroundHtml;
         }
       ] ++ (grammarLinks grammars { format = "wasm"; });
-    in linkFarm "tree-sitter-playground" links;
+    in copyFarm "tree-sitter-playground" entries;
 }
