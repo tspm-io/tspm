@@ -9,7 +9,6 @@ unpackPhase() {
   mkdir -p "$XDG_CONFIG_HOME"/tree-sitter
   ln -s "$languageConfigJson" "$XDG_CONFIG_HOME"/tree-sitter/config.json
 
-  # TODO: npm dependencies, submodules?, sub-paths
   mkdir "$tsDir"
   cp "$src"/grammar.js "$tsDir"/
   cp "$src"/package.json "$tsDir"/
@@ -27,9 +26,8 @@ unpackPhase() {
 }
 
 buildPhase() {
-  # TODO compiled outputs? or handle outside of nix?
   (
-    cd "$tsDir" || exit 1
+    cd "$tsDir"
     tree-sitter generate
 
     case "$format" in

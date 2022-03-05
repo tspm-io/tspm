@@ -1,10 +1,11 @@
-{ bash, runCommand, system, tree-sitter, nodejs, emscripten, stdenv, lib
-}: rec {
+{ bash, system, tree-sitter, nodejs, emscripten, stdenv, lib, fetchurl, linkFarm
+, callPackage, writeTextFile }: rec {
   maintainers = import ./maintainers.nix;
 
   # TODO:
   # - cd into subpath
-  # - curry in desired ABI
+  # - desired ABI
+  # - npm dependencies / submodules
   grammar = grammar: language: author:
     { format, ... }:
     stdenv.mkDerivation rec {
@@ -19,13 +20,7 @@
     };
 
   buildAllGrammars = grammars: opts:
-    let
-      grammarLinks = builtins.map (grammar: ''
-        mkdir -p $out/${grammar.language}
-        ln -s ${grammar.builder opts} $out/${grammar.language}/${grammar.author}
-      '') grammars;
-    in runCommand "consolidate-all-grammars" { }
-    (builtins.concatStringsSep "\n" grammarLinks);
+    linkFarm "consolidate-all-grammars" (grammarLinks grammars opts);
 
   formatGrammars = grammars:
     lib.lists.flatten (builtins.map (language:
@@ -34,4 +29,48 @@
         builder = grammars.${language}.${author} language author;
       }) (builtins.attrNames grammars.${language}))
       (builtins.attrNames grammars));
+
+  grammarLinks = grammars: opts:
+    builtins.map (grammar: {
+      name = "${grammar.language}/${grammar.author}";
+      path = grammar.builder opts;
+    }) grammars;
+
+  treeSitterJs = fetchurl {
+    url =
+      "https://github.com/tree-sitter/tree-sitter/releases/download/v${tree-sitter.version}/tree-sitter.js";
+    sha256 = "sha256-M2eDcW3OdYSq9H0ldF8YwL4IAAQzmy+Fif2y0P32mV8=";
+  };
+
+  treeSitterWasm = fetchurl {
+    url =
+      "https://github.com/tree-sitter/tree-sitter/releases/download/v${tree-sitter.version}/tree-sitter.wasm";
+    sha256 = "sha256-QBVbxeMq3KdHwApTeYZszBP2Q7de8lL7eT8AviFbcbk=";
+  };
+
+  buildPlayground = grammars:
+    let
+      playgroundHtml = writeTextFile {
+        name = "tree-sitter-playground-html";
+        text = callPackage ./assets/index.html.nix { inherit grammars; };
+      };
+      links = [
+        {
+          name = "tree-sitter.js";
+          path = treeSitterJs;
+        }
+        {
+          name = "tree-sitter.wasm";
+          path = treeSitterWasm;
+        }
+        {
+          name = "playground.js";
+          path = ./assets/playground.js;
+        }
+        {
+          name = "index.html";
+          path = playgroundHtml;
+        }
+      ] ++ (grammarLinks grammars { format = "wasm"; });
+    in linkFarm "tree-sitter-playground" links;
 }

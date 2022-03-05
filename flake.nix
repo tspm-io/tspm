@@ -18,6 +18,7 @@
         };
         lib = pkgs.callPackage ./lib { };
         grammars = pkgs.callPackage ./grammars.nix { tspm = lib; };
+        playground = lib.buildPlayground grammars;
       in {
         checks = {
           format = pkgs.runCommand "format-check" { } ''
@@ -28,6 +29,8 @@
         };
         packages = {
           wasm = lib.buildAllGrammars grammars { format = "wasm"; };
+          pg = playground;
+          playground = playground;
         };
         defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
         # hmm... could replace this with nix-devshell

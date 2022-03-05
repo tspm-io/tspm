@@ -1,10 +1,7 @@
 # upstream:
 # https://github.com/NixOS/nixpkgs/blob/3e072546ea98db00c2364b81491b893673267827/pkgs/development/tools/parsing/tree-sitter/default.nix
-{ lib, stdenv, fetchgit, fetchFromGitHub, fetchurl, writeShellScript, runCommand
-, which, formats, rustPlatform, jq, nix-prefetch-git, xe, curl, emscripten
-, Security, callPackage, linkFarm
-
-, enableShared ? !stdenv.hostPlatform.isStatic
+{ lib, stdenv, fetchFromGitHub, which, rustPlatform, emscripten, Security
+, callPackage, enableShared ? !stdenv.hostPlatform.isStatic
 , enableStatic ? stdenv.hostPlatform.isStatic, webUISupport ? true }:
 
 let
