@@ -33,6 +33,10 @@
           playground = playground;
         };
         defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
+        defaultApp = {
+          type = "app";
+          program = "${playground}/run.sh";
+        };
         # hmm... could replace this with nix-devshell
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [ nixfmt pkgs.tree-sitter ];
