@@ -8,8 +8,8 @@ documents as well:
 
 ### Motivation
 
-Currently, tree-sitter grammars distributed using git repositories, which
-pushes the burden of writing a well written package to the grammar authors.
+Currently, tree-sitter grammars are distributed using git repositories, which
+places the burden of writing a well written package on the grammar authors.
 This is a bit problematic because:
 
 * grammar repositories typically contain items like documentation, queries,
