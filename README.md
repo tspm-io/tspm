@@ -7,10 +7,7 @@ _An open-source [tree-sitter][tree-sitter] package manager_
 ### Status
 
 TSPM is just starting out! Currently TSPM is only an online playground with a
-small set of grammars. The playground is in the process of being published now.
-(it's always DNS ;P)
-
-<!-- See the playground [here][playground]. -->
+small set of grammars. See the playground [here][playground].
 
 See more info about vision and scope in the [docs](./docs) directory.
 
