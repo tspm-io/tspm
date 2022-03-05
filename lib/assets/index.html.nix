@@ -3,9 +3,10 @@ let
   grammarSelect = grammar:
     let
       slug = "${grammar.language}/${grammar.author}";
+      display = "${grammar.language} · ${grammar.author}";
       selected =
         if grammar.language == "elixir" then " selected=\"selected\"" else "";
-    in ''<option value="${slug}"${selected}>${slug}</option>'';
+    in ''<option value="${slug}"${selected}>${display}</option>'';
   grammarSelects =
     builtins.concatStringsSep " " (builtins.map grammarSelect grammars);
 in ''
