@@ -51,7 +51,7 @@ in ''
             <span id="update-time"></span>
           </div>
 
-          <select id="language-select" style="display: none">${grammarSelects}</select>
+          <select id="language-select">${grammarSelects}</select>
         </header>
 
         <main>
