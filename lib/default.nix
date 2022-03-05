@@ -1,5 +1,5 @@
-{ system, tree-sitter, nodejs, emscripten, httplz, stdenv, lib, fetchurl, linkFarm
-, callPackage, writeTextFile, writeShellScript, runCommand }: rec {
+{ system, tree-sitter, nodejs, emscripten, httplz, stdenv, lib, fetchurl
+, linkFarm, callPackage, writeTextFile, writeShellScript, runCommand }: rec {
   maintainers = import ./maintainers.nix;
 
   # TODO:
@@ -55,7 +55,10 @@
         cp -r ${path} ${name}
       '';
       copies = builtins.map copyEntry entries;
-    in runCommand name { preferLocalBuild = true; allowSubstitutes = false; } ''
+    in runCommand name {
+      preferLocalBuild = true;
+      allowSubstitutes = false;
+    } ''
       mkdir -p $out
       cd $out
       ${builtins.concatStringsSep "" copies}
