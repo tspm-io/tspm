@@ -1,0 +1,39 @@
+name: "Generate Playground"
+on:
+  push:
+    branches:
+     - main
+
+jobs:
+  generate:
+    runs-on: "ubuntu-latest"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v16
+      with:
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build playground
+      run: nix build .#pg
+
+    - name: Checkout gh-pages branch to ./gh-pages
+      uses: actions/checkout@v2
+      with:
+        ref: gh-pages
+        path: ./gh-pages
+
+    - name: Copy playground to gh-pages
+      run: cp --recursive ./result/* ./gh-pages/
+
+    - name: Commit generated playground files
+      run: |
+        cd ./gh-pages
+        git config --local user.email "$(git log --format='%ae' HEAD^!)"
+        git config --local user.name "$(git log --format='%an' HEAD^!)"
+        git add .
+        git commit -m "Generate playground" || true
+        git push
