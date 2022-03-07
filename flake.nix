@@ -2,48 +2,67 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-21.11";
     flake-utils.url = "github:numtide/flake-utils";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixCargoIntegration = {
+      url = "github:yusdacra/nix-cargo-integration";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rustOverlay.follows = "rust-overlay";
+    };
+    treeSitterSource = {
+      url = "https://github.com/tree-sitter/tree-sitter.git";
+      type = "git";
+      flake = false;
+    };
   };
-  outputs = inputs:
-    with inputs;
+  outputs =
+    inputs@{ flake-utils, nixpkgs, nixCargoIntegration, treeSitterSource, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        tree-sitter-overlay = (self: super: {
-          tree-sitter = super.callPackage ./lib/tree-sitter.nix {
-            inherit (super.darwin.apple_sdk.frameworks) Security;
-          };
-        });
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ tree-sitter-overlay ];
+        pkgs = import nixpkgs { inherit system; };
+        inherit (pkgs) runCommand lib stdenv;
+        tree-sitter = (pkgs.callPackage ./lib/tree-sitter.nix {
+          inherit nixCargoIntegration treeSitterSource;
+        }).defaultPackage.${system};
+        tspm = pkgs.callPackage ./lib { inherit tree-sitter; };
+        grammars = pkgs.callPackage ./grammars.nix { inherit tspm; };
+        playground = tspm.buildPlayground grammars;
+        playgroundApp = {
+          type = "app";
+          program = "${playground}/run.sh";
         };
-        lib = pkgs.callPackage ./lib { };
-        grammars = pkgs.callPackage ./grammars.nix { tspm = lib; };
-        playground = lib.buildPlayground grammars;
       in {
         checks = {
           format = pkgs.runCommand "format-check" { } ''
             ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix
             touch $out
           '';
-          tests = lib.buildAllGrammars grammars { format = "test"; };
+          grammarTests = tspm.buildAllGrammars grammars { format = "test"; };
         };
         packages = {
-          wasm = lib.buildAllGrammars grammars { format = "wasm"; };
+          wasm = tspm.buildAllGrammars grammars { format = "wasm"; };
           pg = playground;
           playground = playground;
-          artifacts = lib.buildAllGrammars grammars {
+          artifacts = tspm.buildAllGrammars grammars {
             format = "src.tar.gz";
             paths = "metadata";
           };
+          tree-sitter = tree-sitter;
         };
-        defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
-        defaultApp = {
-          type = "app";
-          program = "${playground}/run.sh";
+        defaultPackage = tspm.buildAllGrammars grammars { format = "src"; };
+        apps = {
+          tree-sitter = {
+            type = "app";
+            program = "${tree-sitter}/bin/tree-sitter";
+          };
+          pg = playgroundApp;
+          playground = playgroundApp;
         };
+        defaultApp = playgroundApp;
         # hmm... could replace this with nix-devshell
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ nixfmt pkgs.tree-sitter ];
-        };
+        devShell =
+          pkgs.mkShell { buildInputs = with pkgs; [ nixfmt tree-sitter ]; };
       });
 }
