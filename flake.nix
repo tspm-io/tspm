@@ -31,6 +31,10 @@
           wasm = lib.buildAllGrammars grammars { format = "wasm"; };
           pg = playground;
           playground = playground;
+          artifacts = lib.buildAllGrammars grammars {
+            format = "src.tar.gz";
+            paths = "metadata";
+          };
         };
         defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
         defaultApp = {

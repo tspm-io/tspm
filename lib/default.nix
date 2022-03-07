@@ -1,5 +1,6 @@
-{ system, tree-sitter, nodejs, emscripten, httplz, stdenv, lib, fetchurl
-, linkFarm, callPackage, writeTextFile, writeShellScript, runCommand }: rec {
+{ system, tree-sitter, nodejs, emscripten, httplz, nix, gnutar, stdenv, lib
+, fetchurl, linkFarm, callPackage, writeTextFile, writeShellScript, runCommand
+}: rec {
   maintainers = import ./maintainers.nix;
 
   # TODO:
@@ -15,12 +16,12 @@
       src = grammar.src;
 
       languageConfigJson = ./language-config.json;
-      buildInputs = [ tree-sitter nodejs emscripten ];
+      buildInputs = [ tree-sitter nodejs emscripten gnutar ];
       builder = ./build-grammar.sh;
     };
 
   buildAllGrammars = grammars: opts:
-    linkFarm "consolidate-all-grammars" (grammarLinks grammars opts);
+    linkFarm "all-grammars" (grammarLinks grammars opts);
 
   formatGrammars = grammars:
     lib.lists.flatten (builtins.map (language:
@@ -31,10 +32,26 @@
       (builtins.attrNames grammars));
 
   grammarLinks = grammars: opts:
-    builtins.map (grammar: {
-      name = "${grammar.language}/${grammar.author}";
-      path = grammar.builder opts;
-    }) grammars;
+    let
+      grammarToPath =
+        if (opts.paths or "") == "metadata" then pathWithMetadata else path;
+    in builtins.map (grammarToPath opts) grammars;
+
+  path = opts: grammar: {
+    name = "${grammar.language}/${grammar.author}";
+    path = grammar.builder opts;
+  };
+
+  pathWithMetadata = opts: grammar:
+    let
+      artifact = grammar.builder opts;
+      hash = builtins.hashFile "sha256" artifact;
+      slug =
+        "${grammar.language}/${grammar.author}/${artifact.version}-${hash}-${opts.format}";
+    in {
+      name = slug;
+      path = artifact;
+    };
 
   treeSitterJs = fetchurl {
     url =

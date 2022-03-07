@@ -15,7 +15,7 @@ unpackPhase() {
 
   # 'src/' will be updated by 'tree-sitter generate', so we copy
   # without preserving the mode to allow tree-sitter to write
-  # to the read-only files.
+  # to the otherwise read-only files.
   cp --recursive --no-preserve=mode "$src"/src "$tsDir"/src/
 
   if [[ "$format" == "test" ]]; then
@@ -35,7 +35,10 @@ buildPhase() {
         tree-sitter build-wasm
         ;;
       "test")
-        tree-sitter test 2>&1 | tee "$tsDir"/results.txt
+        tree-sitter test 2>&1 | tee "$out"
+        ;;
+      "src.tar.gz")
+        tar --create --gzip --file="$out" "$tsDir"
         ;;
       *)
         ;;
@@ -54,9 +57,6 @@ installPhase() {
       mkdir "$out"
       cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$out"/
       cp "$tsDir"/*.wasm "$out"/parser.wasm
-      ;;
-    "test")
-      cp "$tsDir"/results.txt "$out"
       ;;
     *)
       ;;
