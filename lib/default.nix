@@ -14,6 +14,8 @@
       pname = "grammar-${language}-${author}-${format}";
       version = grammar.version;
       src = grammar.src;
+      subpath = grammar.subpath or ".";
+      includePaths = grammar.includePaths or [ "./" ];
 
       languageConfigJson = ./language-config.json;
       buildInputs = [ tree-sitter nodejs emscripten gnutar ];

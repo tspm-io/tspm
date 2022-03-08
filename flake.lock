@@ -146,11 +146,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1646648603,
-        "narHash": "sha256-NBMVpTVTdNvmW5aPjJOIqDaTL6bgB5LYnt7uKG2ZsRQ=",
+        "lastModified": 1646681124,
+        "narHash": "sha256-1ytR1z6RyBbxhk0LiO18QBH6Mu1JfAEWuUVBdbD4Bw8=",
         "owner": "yusdacra",
         "repo": "nix-cargo-integration",
-        "rev": "3a5b0a6a272f42ec6f59547e176e5afe054d2689",
+        "rev": "3b08d21177cecd5d69bdf76400a6145a021d1e49",
         "type": "github"
       },
       "original": {
