@@ -9,20 +9,16 @@ unpackPhase() {
   mkdir -p "$XDG_CONFIG_HOME/tree-sitter"
   ln -s "$languageConfigJson" "$XDG_CONFIG_HOME/tree-sitter/config.json"
 
-  mkdir "$tsDir"
+  mkdir -p "$tsDir/$subpath"
 
-  cp --no-preserve=mode "$src/package.json" "$tsDir"/
+  cp --no-preserve=mode "$src/package.json" "$tsDir/package.json"
 
-  for path in $includePaths; do
-    mkdir -p "$tsDir/$path"
+  cp --no-preserve=mode "$src/$subpath/package.json" "$tsDir/$subpath/package.json"
+  cp "$src/$subpath/grammar.js" "$tsDir/$subpath/grammar.js"
+  cp --recursive --no-preserve=mode "$src/$subpath/src" "$tsDir/$subpath/src"
 
-    cp "$src/$path/grammar.js" "$tsDir/$path/grammar.js"
-    cp --no-preserve=mode "$src/$path/package.json" "$tsDir/$path/package.json"
-
-    # 'src/' will be updated by 'tree-sitter generate', so we copy
-    # without preserving the mode to allow tree-sitter to write
-    # to the otherwise read-only files.
-    cp --recursive --no-preserve=mode "$src/$path/src" "$tsDir/$path/src"
+  for path in $copyPaths; do
+    cp --recursive "$src/$path" "$tsDir/$path"
   done
 
   if [[ "$format" == "test" ]]; then
@@ -63,7 +59,7 @@ installPhase() {
     "wasm")
       mkdir "$out"
       cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$out"/
-      cp "$tsDir"/*.wasm "$out"/parser.wasm
+      cp "$tsDir/$subpath/"*.wasm "$out"/parser.wasm
       ;;
     *)
       ;;

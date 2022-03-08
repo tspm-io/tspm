@@ -15,7 +15,7 @@
       version = grammar.version;
       src = grammar.src;
       subpath = grammar.subpath or ".";
-      includePaths = grammar.includePaths or [ "./" ];
+      copyPaths = grammar.copyPaths or [ ];
 
       languageConfigJson = ./language-config.json;
       buildInputs = [ tree-sitter nodejs emscripten gnutar ];

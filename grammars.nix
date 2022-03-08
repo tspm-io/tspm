@@ -53,7 +53,7 @@ in tspm.formatGrammars {
     version = tree-sitter-ocaml-version;
     src = tree-sitter-ocaml;
     subpath = "ocaml";
-    includePaths = [ "ocaml" ];
+    copyPaths = [ "common" ];
     meta = with lib; {
       license = licenses.mit;
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
@@ -63,7 +63,7 @@ in tspm.formatGrammars {
     version = tree-sitter-ocaml-version;
     src = tree-sitter-ocaml;
     subpath = "interface";
-    includePaths = [ "ocaml" "interface" ];
+    copyPaths = [ "ocaml" "common" ];
     meta = with lib; {
       license = licenses.mit;
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
