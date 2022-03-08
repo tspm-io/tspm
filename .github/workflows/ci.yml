@@ -26,3 +26,7 @@ jobs:
       # detects reproducibility failures
     - name: Re-build flake
       run: nix build --rebuild
+
+      # runs tree-sitter tests as well
+    - name: Check flake outputs
+      run: nix flake check

@@ -1,49 +1,76 @@
 {
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-21.11";
-    flake-utils.url = "github:numtide/flake-utils";
-  };
-  outputs = inputs:
-    with inputs;
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        tree-sitter-overlay = (self: super: {
-          tree-sitter = super.callPackage ./lib/tree-sitter.nix {
-            inherit (super.darwin.apple_sdk.frameworks) Security;
-          };
-        });
-        pkgs = import nixpkgs {
+  inputs = { nixpkgs.url = "github:NixOS/nixpkgs/release-21.11"; };
+  outputs = { self, nixpkgs, ... }:
+    let
+      inherit (nixpkgs) lib;
+      systems = [
+        "aarch64-linux"
+        "aarch64-darwin"
+        "i686-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
+      forAllSystems = f: lib.genAttrs systems (system: f system);
+      forCurrentSystem = f: lib.genAttrs [ "x86_64-linux" ] (system: f system);
+      pkgs' = (system:
+        import nixpkgs {
           inherit system;
-          overlays = [ tree-sitter-overlay ];
+          overlays = [ self.overlay ];
+        });
+      mergeOutputs = a: b:
+        builtins.mapAttrs (system: a_output:
+          if builtins.hasAttr system b then
+            lib.mergeAttrs a_output b.${system}
+          else
+            a_output) a;
+    in {
+      overlay = final: prev: rec {
+        tspm = final.callPackage ./lib { };
+        grammars = final.callPackage ./grammars.nix { inherit tspm; };
+        tree-sitter = final.callPackage ./lib/tree-sitter.nix {
+          inherit (final.darwin.apple_sdk.frameworks) Security;
         };
-        lib = pkgs.callPackage ./lib { };
-        grammars = pkgs.callPackage ./grammars.nix { tspm = lib; };
-        playground = lib.buildPlayground grammars;
-      in {
-        checks = {
-          format = pkgs.runCommand "format-check" { } ''
-            ${pkgs.nixfmt}/bin/nixfmt --check ${./.}/**.nix
+      };
+
+      checks = forAllSystems (system:
+        let inherit (pkgs' system) runCommand nixfmt tspm grammars;
+        in {
+          format = runCommand "format-check" { } ''
+            ${nixfmt}/bin/nixfmt --check ${./.}/**.nix
             touch $out
           '';
-          tests = lib.buildAllGrammars grammars { format = "test"; };
-        };
-        packages = {
-          wasm = lib.buildAllGrammars grammars { format = "wasm"; };
+          tests = tspm.buildAllGrammars grammars { format = "test"; };
+        });
+
+      packages = mergeOutputs (forAllSystems (system:
+        let
+          pkgs = pkgs' system;
+          inherit (pkgs) tspm grammars;
+        in rec {
+          src = tspm.buildAllGrammars grammars { format = "src"; };
+          wasm = tspm.buildAllGrammars grammars { format = "wasm"; };
+          playground = tspm.buildPlayground grammars;
           pg = playground;
-          playground = playground;
-          artifacts = lib.buildAllGrammars grammars {
-            format = "src.tar.gz";
-            paths = "metadata";
-          };
-        };
-        defaultPackage = lib.buildAllGrammars grammars { format = "src"; };
-        defaultApp = {
-          type = "app";
-          program = "${playground}/run.sh";
-        };
-        # hmm... could replace this with nix-devshell
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ nixfmt pkgs.tree-sitter ];
-        };
+          tree-sitter = pkgs.tree-sitter;
+        })) (forCurrentSystem (system:
+          let inherit (pkgs' system) tspm grammars;
+          in {
+            # metadata paths use recursive nix which breaks 'nix flake check'
+            artifacts = tspm.buildAllGrammars grammars {
+              format = "src.tar.gz";
+              paths = "metadata";
+            };
+          }));
+
+      defaultPackage = forAllSystems (system: self.packages.${system}.src);
+
+      defaultApp = forAllSystems (system: {
+        type = "app";
+        program = "${self.packages.${system}.playground}/run.sh";
       });
+
+      devShell = forAllSystems (system:
+        let inherit (pkgs' system) mkShell nixfmt tree-sitter;
+        in mkShell { buildInputs = [ nixfmt tree-sitter ]; });
+    };
 }
