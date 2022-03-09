@@ -1,4 +1,4 @@
-{ system, tree-sitter, nodejs, emscripten, httplz, nix, gnutar, stdenv, lib
+{ system, tree-sitter, nodejs, emscripten, httplz, nixUnstable, gnutar, stdenv, lib
 , fetchurl, linkFarm, callPackage, writeTextFile, writeShellScript, runCommand
 }: rec {
   maintainers = import ./maintainers.nix;
@@ -23,7 +23,10 @@
     };
 
   buildAllGrammars = grammars: opts:
-    linkFarm "all-grammars" (grammarLinks grammars opts);
+    if opts.metadata or false then
+      linkFarmWithMetadata "artifacts" grammars opts
+    else
+      linkFarm "all-grammars" (grammarLinks grammars opts);
 
   formatGrammars = grammars:
     lib.lists.flatten (builtins.map (language:
@@ -34,26 +37,10 @@
       (builtins.attrNames grammars));
 
   grammarLinks = grammars: opts:
-    let
-      grammarToPath =
-        if (opts.paths or "") == "metadata" then pathWithMetadata else path;
-    in builtins.map (grammarToPath opts) grammars;
-
-  path = opts: grammar: {
-    name = "${grammar.language}/${grammar.author}";
-    path = grammar.builder opts;
-  };
-
-  pathWithMetadata = opts: grammar:
-    let
-      artifact = grammar.builder opts;
-      hash = builtins.hashFile "sha256" artifact;
-      slug =
-        "${grammar.language}/${grammar.author}/${artifact.version}-${hash}-${opts.format}";
-    in {
-      name = slug;
-      path = artifact;
-    };
+    builtins.map (grammar: {
+      name = "${grammar.language}/${grammar.author}";
+      path = grammar.builder opts;
+    }) grammars;
 
   treeSitterJs = fetchurl {
     url =
@@ -81,6 +68,26 @@
       mkdir -p $out
       cd $out
       ${builtins.concatStringsSep "" copies}
+    '';
+
+  linkFarmWithMetadata = name: grammars: opts:
+    let
+      grammarEntry = grammar:
+        let artifact = grammar.builder opts;
+        in ''
+          hash="$(${nixUnstable}/bin/nix --option experimental-features nix-command hash file --type sha256 --base32 ${artifact} | tr --delete '\n')"
+          path="${grammar.language}/${grammar.author}/${artifact.version}-$hash-${opts.format}"
+          mkdir -p "$(dirname "$path")"
+          ln -s ${artifact} "$path"
+        '';
+      links = builtins.map grammarEntry grammars;
+    in runCommand name {
+      preferLocalBuild = true;
+      allowSubstitutes = false;
+    } ''
+      mkdir -p $out
+      cd $out
+      ${builtins.concatStringsSep "" links}
     '';
 
   buildPlayground = grammars:

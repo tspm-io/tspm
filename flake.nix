@@ -11,18 +11,11 @@
         "x86_64-linux"
       ];
       forAllSystems = f: lib.genAttrs systems (system: f system);
-      forCurrentSystem = f: lib.genAttrs [ "x86_64-linux" ] (system: f system);
       pkgs' = (system:
         import nixpkgs {
           inherit system;
           overlays = [ self.overlay ];
         });
-      mergeOutputs = a: b:
-        builtins.mapAttrs (system: a_output:
-          if builtins.hasAttr system b then
-            lib.mergeAttrs a_output b.${system}
-          else
-            a_output) a;
     in {
       overlay = final: prev: rec {
         tspm = final.callPackage ./lib { };
@@ -42,7 +35,7 @@
           tests = tspm.buildAllGrammars grammars { format = "test"; };
         });
 
-      packages = mergeOutputs (forAllSystems (system:
+      packages = forAllSystems (system:
         let
           pkgs = pkgs' system;
           inherit (pkgs) tspm grammars;
@@ -52,15 +45,11 @@
           playground = tspm.buildPlayground grammars;
           pg = playground;
           tree-sitter = pkgs.tree-sitter;
-        })) (forCurrentSystem (system:
-          let inherit (pkgs' system) tspm grammars;
-          in {
-            # metadata paths use recursive nix which breaks 'nix flake check'
-            artifacts = tspm.buildAllGrammars grammars {
-              format = "src.tar.gz";
-              paths = "metadata";
-            };
-          }));
+          artifacts = tspm.buildAllGrammars grammars {
+            format = "src.tar.gz";
+            metadata = true;
+          };
+        });
 
       defaultPackage = forAllSystems (system: self.packages.${system}.src);
 
