@@ -36,8 +36,6 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: nix build .#artifacts
 
-    - run: ls -al
-
     - name: Publish artifacts to registry
       if: github.ref == 'refs/heads/main'
       run: |
