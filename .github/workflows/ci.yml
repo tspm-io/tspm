@@ -1,8 +1,9 @@
-name: "CI"
+name: CI
 on: push
 
 jobs:
-  tests:
+  test:
+    name: Check
     runs-on: "ubuntu-latest"
     steps:
     - name: Checkout
