@@ -14,10 +14,10 @@
       pkgs' = (system:
         import nixpkgs {
           inherit system;
-          overlays = [ self.overlay ];
+          overlays = [ self.overlays.default ];
         });
     in {
-      overlay = final: prev: rec {
+      overlays.default = final: prev: rec {
         tspm = final.callPackage ./lib { };
         grammars = final.callPackage ./grammars.nix { inherit tspm; };
         tree-sitter = final.callPackage ./lib/tree-sitter.nix {
@@ -41,6 +41,7 @@
           inherit (pkgs) tspm grammars;
         in rec {
           src = tspm.buildAllGrammars grammars { format = "src"; };
+          default = src;
           wasm = tspm.buildAllGrammars grammars { format = "wasm"; };
           playground = tspm.buildPlayground grammars;
           pg = playground;
@@ -51,15 +52,13 @@
           };
         });
 
-      defaultPackage = forAllSystems (system: self.packages.${system}.src);
-
       defaultApp = forAllSystems (system: {
         type = "app";
         program = "${self.packages.${system}.playground}/run.sh";
       });
 
-      devShell = forAllSystems (system:
+      devShells = forAllSystems (system:
         let inherit (pkgs' system) mkShell nixfmt tree-sitter;
-        in mkShell { buildInputs = [ nixfmt tree-sitter ]; });
+        in { default = mkShell { buildInputs = [ nixfmt tree-sitter ]; }; });
     };
 }

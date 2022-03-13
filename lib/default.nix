@@ -1,6 +1,6 @@
-{ system, tree-sitter, nodejs, emscripten, httplz, nixUnstable, gnutar, stdenv, lib
-, fetchurl, linkFarm, callPackage, writeTextFile, writeShellScript, runCommand
-}: rec {
+{ system, tree-sitter, nodejs, emscripten, httplz, nixUnstable, gnutar, stdenv
+, lib, fetchurl, linkFarm, callPackage, writeTextFile, writeShellScript
+, runCommand }: rec {
   maintainers = import ./maintainers.nix;
 
   # TODO:
