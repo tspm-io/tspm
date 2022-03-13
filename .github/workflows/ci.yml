@@ -40,13 +40,25 @@ jobs:
 
     - name: Publish artifacts to registry
       if: github.ref == 'refs/heads/main'
-      uses: jakejarvis/s3-sync-action@7ed8b112447abb09f1da74f3466e4194fc7a6311
-      with:
-        args: --acl public-read --follow-symlinks
-      env:
-        AWS_S3_BUCKET: tspm
-        AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-        AWS_S3_ENDPOINT: https://nyc3.digitaloceanspaces.com
-        AWS_REGION: nyc3
-        SOURCE_DIR: ./result
+      run: |
+        nix profile install aws
+
+        # upstream: https://github.com/jakejarvis/s3-sync-action/blob/7ed8b112447abb09f1da74f3466e4194fc7a6311/entrypoint.sh
+        aws configure --profile artifact-publish-profile <<-EOF > /dev/null 2>&1
+        ${{ secrets.ACCESS_KEY_ID }}
+        ${{ secrets.SECRET_ACCESS_KEY }}
+        ${{ env.AWS_REGION }}
+        text
+        EOF
+
+        aws s3 sync ./result s3://tspm/ \
+          --profile artifact-publish-profile \
+          --endpoint-url https://nyc3.digitaloceanspaces.com \
+          --acl public-read --follow-symlinks --no-progress
+
+        aws configure --profile artifact-publish-profile <<-EOF > /dev/null 2>&1
+        null
+        null
+        null
+        text
+        EOF
