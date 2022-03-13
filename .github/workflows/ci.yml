@@ -47,7 +47,7 @@ jobs:
         aws configure --profile artifact-publish-profile <<-EOF > /dev/null 2>&1
         ${{ secrets.ACCESS_KEY_ID }}
         ${{ secrets.SECRET_ACCESS_KEY }}
-        ${{ env.AWS_REGION }}
+        nyc3
         text
         EOF
 
