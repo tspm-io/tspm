@@ -41,7 +41,7 @@ jobs:
     - name: Publish artifacts to registry
       if: github.ref == 'refs/heads/main'
       run: |
-        nix profile install nixpkgs#aws
+        nix profile install nixpkgs#awscli2
 
         # upstream: https://github.com/jakejarvis/s3-sync-action/blob/7ed8b112447abb09f1da74f3466e4194fc7a6311/entrypoint.sh
         aws configure --profile artifact-publish-profile <<-EOF > /dev/null 2>&1
