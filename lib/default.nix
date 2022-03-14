@@ -3,6 +3,8 @@
 , runCommand }: rec {
   maintainers = import ./maintainers.nix;
 
+  abiVersion = "13";
+
   # TODO:
   # - cd into subpath
   # - desired ABI
@@ -16,6 +18,7 @@
       src = grammar.src;
       subpath = grammar.subpath or ".";
       copyPaths = grammar.copyPaths or [ ];
+      abi = abiVersion;
 
       languageConfigJson = ./language-config.json;
       buildInputs = [ tree-sitter nodejs emscripten gnutar ];
@@ -76,7 +79,7 @@
         let artifact = grammar.builder opts;
         in ''
           hash="$(${nixUnstable}/bin/nix --option experimental-features nix-command hash file --type sha256 --base32 ${artifact} | tr --delete '\n')"
-          path="${grammar.language}/${grammar.author}/${artifact.version}-$hash-${opts.format}"
+          path="${grammar.language}/${grammar.author}/${artifact.version}-${tree-sitter.version}-${abiVersion}-$hash-${opts.format}"
           mkdir -p "$(dirname "$path")"
           ln -s ${artifact} "$path"
         '';

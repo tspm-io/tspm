@@ -31,7 +31,7 @@ unpackPhase() {
 buildPhase() {
   (
     cd "$tsDir/$subpath"
-    tree-sitter generate
+    tree-sitter generate --abi "$abi"
 
     case "$format" in
       "wasm")
