@@ -78,7 +78,7 @@
       grammarEntry = grammar:
         let artifact = grammar.builder opts;
         in ''
-          hash="$(${nixUnstable}/bin/nix --option experimental-features nix-command hash file --type sha256 --base32 ${artifact} | tr --delete '\n')"
+          hash="$(${nixUnstable}/bin/nix --option experimental-features nix-command hash file --type sha256 --base16 ${artifact} | tr --delete '\n')"
           path="${grammar.language}/${grammar.author}/${artifact.version}-${tree-sitter.version}-${abiVersion}-$hash-${opts.format}"
           mkdir -p "$(dirname "$path")"
           ln -s ${artifact} "$path"
