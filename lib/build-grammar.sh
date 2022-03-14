@@ -41,7 +41,8 @@ buildPhase() {
         tree-sitter test 2>&1 | tee "$out"
         ;;
       "src.tar.gz")
-        tar --create --gzip --file="$out" "$tsDir/$subpath/src"
+        cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$tsDir/$subpath/src"
+        tar --create --gzip --file="$out" --directory "$tsDir/$subpath/src" .
         ;;
       *)
         ;;
