@@ -72,7 +72,7 @@ generate` and any licensing files. We can build the grammar with a C/C++
 compiler like so:
 
 ```sh
-$ export CFLAGS="-I src/ -g -O2 -fPIC -fno-exceptions"
+$ CFLAGS="-I src/ -g -O2 -fPIC -fno-exceptions"
 $ c++ -c src/scanner.cc -o scanner.o $CFLAGS
 $ cc -c src/parser.c -o parser.o $CFLAGS
 $ cc -shared -o elixir.so *.o
