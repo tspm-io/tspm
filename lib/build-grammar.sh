@@ -30,6 +30,8 @@ unpackPhase() {
 
 buildPhase() {
   (
+    eval "$preGenerate"
+
     cd "$tsDir/$subpath"
     tree-sitter generate --abi "$abi"
 

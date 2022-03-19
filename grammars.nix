@@ -9,6 +9,19 @@ let
     rev = tree-sitter-ocaml-version;
     sha256 = "sha256-aBqW3uKSgNrZKwLrujZvzttimHDPykaNe6DHOJpTA64=";
   };
+  tree-sitter-typescript-version = "e8e8e8dc2745840b036421b4e43286750443cb13";
+  tree-sitter-typescript = fetchFromGitHub {
+    owner = "tree-sitter";
+    repo = "tree-sitter-typescript";
+    rev = tree-sitter-typescript-version;
+    sha256 = "sha256-GAfJnrtyt+BiB6HPEpVQpG7E9nXMzw6uxiiQ+6Q7O/w=";
+  };
+  tree-sitter-typescript-javascript-dependency = fetchFromGitHub {
+    owner = "tree-sitter";
+    repo = "tree-sitter-javascript";
+    rev = "fdeb68ac8d2bd5a78b943528bb68ceda3aade2eb";
+    sha256 = "sha256-x+BJrcceuKU2ARZD8mjoA1ni0b6P2C4YiE1YgcbMvpw=";
+  };
 in tspm.formatGrammars {
   elixir.elixir-lang = tspm.grammar rec {
     version = "a11a686303355a518b0a45dea7c77c5eebb5ec22";
@@ -49,7 +62,7 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  ocaml.tree-sitter = tspm.grammar rec {
+  ocaml.tree-sitter = tspm.grammar {
     version = tree-sitter-ocaml-version;
     src = tree-sitter-ocaml;
     subpath = "ocaml";
@@ -59,7 +72,7 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  ocaml-interface.tree-sitter = tspm.grammar rec {
+  ocaml-interface.tree-sitter = tspm.grammar {
     version = tree-sitter-ocaml-version;
     src = tree-sitter-ocaml;
     subpath = "interface";
@@ -69,6 +82,32 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # interesting grammars todo:
-  # - typescript/tsx, which is uses tree-sitter-javascript via yarn dependencies
+  typescript.tree-sitter = tspm.grammar {
+    version = tree-sitter-typescript-version;
+    src = tree-sitter-typescript;
+    subpath = "typescript";
+    copyPaths = [ "common" ];
+    preGenerate = ''
+      mkdir -p "$tsDir/node_modules"
+      ln -s ${tree-sitter-typescript-javascript-dependency} "$tsDir/node_modules/tree-sitter-javascript"
+    '';
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
+  tsx.tree-sitter = tspm.grammar {
+    version = tree-sitter-typescript-version;
+    src = tree-sitter-typescript;
+    subpath = "tsx";
+    copyPaths = [ "common" ];
+    preGenerate = ''
+      mkdir -p "$tsDir/node_modules"
+      ln -s ${tree-sitter-typescript-javascript-dependency} "$tsDir/node_modules/tree-sitter-javascript"
+    '';
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
 }

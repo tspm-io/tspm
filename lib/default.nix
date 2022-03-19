@@ -18,6 +18,7 @@
       src = grammar.src;
       subpath = grammar.subpath or ".";
       copyPaths = grammar.copyPaths or [ ];
+      preGenerate = grammar.preGenerate or "true";
       abi = abiVersion;
 
       languageConfigJson = ./language-config.json;
