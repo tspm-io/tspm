@@ -110,4 +110,17 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
+  rust.tree-sitter = tspm.grammar rec {
+    version = "a360da0a29a19c281d08295a35ecd0544d2da211";
+    src = fetchFromGitHub {
+      owner = "tree-sitter";
+      repo = "tree-sitter-rust";
+      rev = version;
+      sha256 = "sha256-v0MxQgim3N5UjQCTNDLY8brsy6NKtQ9L4gUWzof6yk4=";
+    };
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
 }
