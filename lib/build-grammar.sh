@@ -44,7 +44,10 @@ buildPhase() {
         ;;
       "src.tar.gz")
         cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$tsDir/$subpath/src"
-        tar --create --gzip --file="$out" --directory "$tsDir/$subpath/src" .
+        # The contents (and therefore consistent hash) of a tarball is affected
+        # by the modification times (mtime) of the input files, so we normalize
+        # to a consistent datetime.
+        tar --create --gzip --file="$out" --directory="$tsDir/$subpath/src" --mtime='1985-10-26T01:21:00.000Z' .
         ;;
       *)
         ;;
