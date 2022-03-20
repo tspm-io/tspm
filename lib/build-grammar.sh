@@ -46,8 +46,17 @@ buildPhase() {
         cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$tsDir/$subpath/src"
         # The contents (and therefore consistent hash) of a tarball is affected
         # by the modification times (mtime) of the input files, so we normalize
-        # to a consistent datetime.
-        tar --create --gzip --file="$out" --directory="$tsDir/$subpath/src" --mtime='1985-10-26T01:21:00.000Z' .
+        # to a consistent datetime. The sort order and owner/group are also set
+        # in hopes of a consistent hash between macos/linux
+        # https://stackoverflow.com/a/54908072/7232773
+        tar \
+          --file="$out" \
+          --directory="$tsDir/$subpath/src" \
+          --mtime='1985-10-26T01:21:00.000Z' \
+          --sort=name \
+          --owner=root:0 \
+          --group=root:0 \
+          --create --gzip .
         ;;
       *)
         ;;
