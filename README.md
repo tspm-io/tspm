@@ -13,8 +13,6 @@ Currently TSPM is a small set of grammars hosted in
 - an interactive [online playground][playground]
 - a [package-registry](#registry)
 
-See more info about vision and scope in the [docs](./docs) directory.
-
 ### Registry
 
 TSPM publishes artifacts to a CDN-like registry. Each item in the registry
