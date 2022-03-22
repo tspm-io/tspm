@@ -31,8 +31,8 @@
 let
   grammarSelect = grammar:
     let
-      slug = "${grammar.language}/${grammar.author}";
-      display = "${grammar.language} · ${grammar.author}";
+      slug = "${grammar.language}/${grammar.owner}";
+      display = "${grammar.language} · ${grammar.owner}";
       selected =
         if grammar.language == "elixir" then " selected=\"selected\"" else "";
     in ''<option value="${slug}"${selected}>${display}</option>'';

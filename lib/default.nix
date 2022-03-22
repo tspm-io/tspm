@@ -9,11 +9,11 @@
   # - cd into subpath
   # - desired ABI
   # - npm dependencies / submodules
-  grammar = grammar: language: author:
+  grammar = grammar: language: owner:
     { format, ... }:
     stdenv.mkDerivation rec {
       inherit system format tree-sitter language;
-      pname = "grammar-${language}-${author}-${format}";
+      pname = "grammar-${language}-${owner}-${format}";
       version = grammar.version;
       src = grammar.src;
       subpath = grammar.subpath or ".";
@@ -34,15 +34,15 @@
 
   formatGrammars = grammars:
     lib.lists.flatten (builtins.map (language:
-      builtins.map (author: {
-        inherit language author;
-        builder = grammars.${language}.${author} language author;
+      builtins.map (owner: {
+        inherit language owner;
+        builder = grammars.${language}.${owner} language owner;
       }) (builtins.attrNames grammars.${language}))
       (builtins.attrNames grammars));
 
   grammarLinks = grammars: opts:
     builtins.map (grammar: {
-      name = "${grammar.language}/${grammar.author}";
+      name = "${grammar.language}/${grammar.owner}";
       path = grammar.builder opts;
     }) grammars;
 
@@ -80,7 +80,7 @@
         let artifact = grammar.builder opts;
         in ''
           hash="$(${nixUnstable}/bin/nix --option experimental-features nix-command hash file --type sha256 --base16 ${artifact} | tr --delete '\n')"
-          path="${grammar.language}/${grammar.author}/${artifact.version}-${tree-sitter.version}-${abiVersion}-$hash-${opts.format}"
+          path="${grammar.language}/${grammar.owner}/${artifact.version}-${tree-sitter.version}-${abiVersion}-$hash-${opts.format}"
           mkdir -p "$(dirname "$path")"
           ln -s ${artifact} "$path"
         '';

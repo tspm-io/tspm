@@ -19,11 +19,11 @@ TSPM publishes artifacts to a CDN-like registry. Each item in the registry
 takes the shape
 
 ```
-https://pkgs.tspm.io/<language>/<author>/<revision>-<tree-sitter-version>-<abi-version>-<checksum>-<format>
+https://pkgs.tspm.io/<language>/<owner>/<revision>-<tree-sitter-version>-<abi-version>-<checksum>-<format>
 ```
 
 - `language` - the language the grammar parses, for example: `typescript`
-- `author` - the author of the grammar as declared in `grammars.toml`
+- `owner` - the owner of the grammar as declared in `grammars.toml`
 - `revision` - the git revision of the grammar, for example:
   `b3d4a7f14537ecb1eedc75d5e273dd3ce2887df5`
 - `tree-sitter-version` - the version of tree-sitter-cli used to generate the
