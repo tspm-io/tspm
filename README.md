@@ -163,7 +163,7 @@ The current pricing model for Spaces:
 | 250GB   | 1TB               | $0.02/GB             | $0.01/GB                  | $5.00     |
 ```
 
-Current space usage: 1.9MB.
+Current space usage: 12.4MB.
 
 ### Other docs
 
