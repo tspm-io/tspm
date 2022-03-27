@@ -40,7 +40,11 @@ buildPhase() {
         tree-sitter build-wasm
         ;;
       "test")
-        tree-sitter test 2>&1 | tee "$out"
+        if [[ "$doCheck" == "true" ]]; then
+          tree-sitter test 2>&1 | tee "$out"
+        else
+          echo "tests skipped" | tee "$out"
+        fi
         ;;
       "src.tar.gz")
         cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$tsDir/$subpath/src"

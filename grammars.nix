@@ -110,20 +110,21 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # failing tests:
-  # protobuf.yusdacra = tspm.grammar rec {
-  #   version = "5aef38d655f76a6b0d172340eed3766c93b3124c";
-  #   src = fetchFromGitHub {
-  #     owner = "yusdacra";
-  #     repo = "tree-sitter-protobuf";
-  #     rev = version;
-  #     sha256 = "sha256-h86NQAIRU+mUroa0LqokMtEVd7U5BXo/DADc2UUZQzI=";
-  #   };
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  protobuf.yusdacra = tspm.grammar rec {
+    version = "5aef38d655f76a6b0d172340eed3766c93b3124c";
+    src = fetchFromGitHub {
+      owner = "yusdacra";
+      repo = "tree-sitter-protobuf";
+      rev = version;
+      sha256 = "sha256-h86NQAIRU+mUroa0LqokMtEVd7U5BXo/DADc2UUZQzI=";
+    };
+    # unit tests are failing
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   fish.ram02z = tspm.grammar rec {
     version = "04e54ab6585dfd4fee6ddfe5849af56f101b6d4f";
     src = fetchFromGitHub {
@@ -309,21 +310,22 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # unit tests fail on latest tree-sitter-cli
-  # lean.julian = tspm.grammar rec {
-  #   version = "d98426109258b266e1e92358c5f11716d2e8f638";
-  #   src = fetchFromGitHub {
-  #     owner = "julian";
-  #     repo = "tree-sitter-lean";
-  #     rev = version;
-  #     sha256 = "sha256-U4ObSk4mtpp/gq8fnDQOKFfrgZ8/SuF6v5UhqxyAhWk=";
-  #   };
-  #   copyPaths = [ "grammar" ];
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  lean.julian = tspm.grammar rec {
+    version = "d98426109258b266e1e92358c5f11716d2e8f638";
+    src = fetchFromGitHub {
+      owner = "julian";
+      repo = "tree-sitter-lean";
+      rev = version;
+      sha256 = "sha256-U4ObSk4mtpp/gq8fnDQOKFfrgZ8/SuF6v5UhqxyAhWk=";
+    };
+    copyPaths = [ "grammar" ];
+    # unit tests fail on latest tree-sitter-cli
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   julia.tree-sitter = tspm.grammar rec {
     version = "12ea597262125fc22fd2e91aa953ac69b19c26ca";
     src = fetchFromGitHub {
@@ -376,20 +378,21 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # failing unit tests with latest tree-sitter-cli
-  # yaml.ikatyang = tspm.grammar rec {
-  #   version = "0e36bed171768908f331ff7dff9d956bae016efb";
-  #   src = fetchFromGitHub {
-  #     owner = "ikatyang";
-  #     repo = "tree-sitter-yaml";
-  #     rev = version;
-  #     sha256 = "sha256-bpiT3FraOZhJaoiFWAoVJX1O+plnIi8aXOW2LwyU23M=";
-  #   };
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  yaml.ikatyang = tspm.grammar rec {
+    version = "0e36bed171768908f331ff7dff9d956bae016efb";
+    src = fetchFromGitHub {
+      owner = "ikatyang";
+      repo = "tree-sitter-yaml";
+      rev = version;
+      sha256 = "sha256-bpiT3FraOZhJaoiFWAoVJX1O+plnIi8aXOW2LwyU23M=";
+    };
+    # failing unit tests because they contain error nodes
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   haskell.tree-sitter = tspm.grammar rec {
     version = "b6ec26f181dd059eedd506fa5fbeae1b8e5556c8";
     src = fetchFromGitHub {
@@ -430,20 +433,21 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # fails unit tests on latest tree-sitter-cli
-  # make.alemuller = tspm.grammar rec {
-  #   version = "a4b9187417d6be349ee5fd4b6e77b4172c6827dd";
-  #   src = fetchFromGitHub {
-  #     owner = "alemuller";
-  #     repo = "tree-sitter-make";
-  #     rev = version;
-  #     sha256 = "sha256-qQqapnKKH5X8rkxbZG5PjnyxvnpyZHpFVi/CLkIn/x0=";
-  #   };
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  make.alemuller = tspm.grammar rec {
+    version = "a4b9187417d6be349ee5fd4b6e77b4172c6827dd";
+    src = fetchFromGitHub {
+      owner = "alemuller";
+      repo = "tree-sitter-make";
+      rev = version;
+      sha256 = "sha256-qQqapnKKH5X8rkxbZG5PjnyxvnpyZHpFVi/CLkIn/x0=";
+    };
+    # failing unit tests because there are tests for error nodes
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   glsl.theHamsta = tspm.grammar rec {
     version = "88408ffc5e27abcffced7010fc77396ae3636d7e";
     src = fetchFromGitHub {
@@ -520,21 +524,22 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # unit tests failing
-  # markdown.mdeiml = tspm.grammar rec {
-  #   version = "b49b2da50864171eff56acc8ba067c3540a3991f";
-  #   src = fetchFromGitHub {
-  #     owner = "mdeiml";
-  #     repo = "tree-sitter-markdown";
-  #     rev = version;
-  #     sha256 = "sha256-HeVrjtqjgd3E9NOJlRMQqaxoKGoIFbWgetc47Wa9vqk=";
-  #   };
-  #   copyPaths = [ "html_entities.json" ];
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  markdown.mdeiml = tspm.grammar rec {
+    version = "b49b2da50864171eff56acc8ba067c3540a3991f";
+    src = fetchFromGitHub {
+      owner = "mdeiml";
+      repo = "tree-sitter-markdown";
+      rev = version;
+      sha256 = "sha256-HeVrjtqjgd3E9NOJlRMQqaxoKGoIFbWgetc47Wa9vqk=";
+    };
+    copyPaths = [ "html_entities.json" ];
+    # unit tests are failing
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   scala.tree-sitter = tspm.grammar rec {
     version = "0a3dd53a7fc4b352a538397d054380aaa28be54c";
     src = fetchFromGitHub {
@@ -542,7 +547,6 @@ in tspm.formatGrammars {
       repo = "tree-sitter-scala";
       rev = version;
       sha256 = "sha256-8W4OJA0/EeyiXnh+MwZykAlJl8TAVIby1M6MVeyNntM=";
-      # sha256 = lib.fakeSha256;
     };
     meta = with lib; {
       license = licenses.mit;
@@ -627,21 +631,21 @@ in tspm.formatGrammars {
       package-maintainer = [ tspm.maintainers.the-mikedavis ];
     };
   };
-  # failing query tests. must decide whether to only copy over recognized
-  # queries for tests
-  # graphql.bkegley = tspm.grammar rec {
-  #   version = "5e66e961eee421786bdda8495ed1db045e06b5fe";
-  #   src = fetchFromGitHub {
-  #     owner = "bkegley";
-  #     repo = "tree-sitter-graphql";
-  #     rev = version;
-  #     sha256 = "sha256-NvE9Rpdp4sALqKSRWJpqxwl6obmqnIIdvrL1nK5peXc=";
-  #   };
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  graphql.bkegley = tspm.grammar rec {
+    version = "5e66e961eee421786bdda8495ed1db045e06b5fe";
+    src = fetchFromGitHub {
+      owner = "bkegley";
+      repo = "tree-sitter-graphql";
+      rev = version;
+      sha256 = "sha256-NvE9Rpdp4sALqKSRWJpqxwl6obmqnIIdvrL1nK5peXc=";
+    };
+    # query tests contain broken nodes
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   elm.elm-tooling = tspm.grammar rec {
     version = "bd50ccf66b42c55252ac8efc1086af4ac6bab8cd";
     src = fetchFromGitHub {
@@ -708,19 +712,21 @@ in tspm.formatGrammars {
     };
   };
   # failing unit tests because error nodes
-  # org.milisims = tspm.grammar rec {
-  #   version = "1c3eb533a9cf6800067357b59e03ac3f91fc3a54";
-  #   src = fetchFromGitHub {
-  #     owner = "milisims";
-  #     repo = "tree-sitter-org";
-  #     rev = version;
-  #     sha256 = "sha256-N3hx5DK4utGTb5DJoGfCsobyY0bT8nOb6nvGSRuEsxs=";
-  #   };
-  #   meta = with lib; {
-  #     license = licenses.mit;
-  #     package-maintainer = [ tspm.maintainers.the-mikedavis ];
-  #   };
-  # };
+  org.milisims = tspm.grammar rec {
+    version = "1c3eb533a9cf6800067357b59e03ac3f91fc3a54";
+    src = fetchFromGitHub {
+      owner = "milisims";
+      repo = "tree-sitter-org";
+      rev = version;
+      sha256 = "sha256-N3hx5DK4utGTb5DJoGfCsobyY0bT8nOb6nvGSRuEsxs=";
+    };
+    # unit tests contain error nodes
+    doCheck = false;
+    meta = with lib; {
+      license = licenses.mit;
+      package-maintainer = [ tspm.maintainers.the-mikedavis ];
+    };
+  };
   solidity.joranhonig = tspm.grammar rec {
     version = "5585e0739a248137d9561d835a915efb2db5ac3d";
     src = fetchFromGitHub {

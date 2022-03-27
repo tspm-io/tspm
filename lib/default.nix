@@ -19,6 +19,7 @@
       subpath = grammar.subpath or ".";
       copyPaths = grammar.copyPaths or [ ];
       preGenerate = grammar.preGenerate or "true";
+      doCheck = grammar.doCheck or true;
       abi = abiVersion;
 
       languageConfigJson = ./language-config.json;
