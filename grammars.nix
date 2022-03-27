@@ -492,7 +492,7 @@ in tspm.formatGrammars {
       owner = "the-mikedavis";
       repo = "tree-sitter-git-config";
       rev = version;
-      sha256 = "sha256-xelepogMgyzOtvubBMPnjnoAvMna8cmi8gb0Se5z6LA=";
+      sha256 = "sha256-1QuSmCdq6TIqRkdSKlP43pH95Vn+8xn7l//a9Xct5EI=";
     };
     meta.license = lib.licenses.mit;
   };
