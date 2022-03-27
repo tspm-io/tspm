@@ -101,6 +101,7 @@
         name = "tree-sitter-playground-html";
         text = callPackage ./assets/index.html.nix { inherit grammars; };
       };
+      wasmGrammars = builtins.filter (g: g.skipPlayground or false) grammars;
       entries = [
         {
           name = "run.sh";
@@ -124,6 +125,6 @@
           name = "index.html";
           path = playgroundHtml;
         }
-      ] ++ (grammarLinks grammars { format = "wasm"; });
+      ] ++ (grammarLinks wasmGrammars { format = "wasm"; });
     in copyFarm "tree-sitter-playground" entries;
 }

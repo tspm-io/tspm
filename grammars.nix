@@ -425,6 +425,8 @@ in tspm.formatGrammars {
     copyPaths = [ "html_entities.json" ];
     # unit tests are failing
     doCheck = false;
+    # takes too many resources to build wasm on GitHub Actions
+    skipPlayground = true;
     meta.license = lib.licenses.mit;
   };
   scala.tree-sitter = tspm.grammar rec {
