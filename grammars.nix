@@ -244,19 +244,20 @@ in tspm.formatGrammars {
     copyPaths = [ "commands.json" ];
     meta.license = lib.licenses.mit;
   };
-  lean.julian = tspm.grammar rec {
-    version = "d98426109258b266e1e92358c5f11716d2e8f638";
-    src = fetchFromGitHub {
-      owner = "julian";
-      repo = "tree-sitter-lean";
-      rev = version;
-      sha256 = "sha256-U4ObSk4mtpp/gq8fnDQOKFfrgZ8/SuF6v5UhqxyAhWk=";
-    };
-    copyPaths = [ "grammar" ];
-    # unit tests fail on latest tree-sitter-cli
-    doCheck = false;
-    meta.license = lib.licenses.mit;
-  };
+  # takes too much CPU/RAM to build on GitHub Actions
+  # lean.julian = tspm.grammar rec {
+  #   version = "d98426109258b266e1e92358c5f11716d2e8f638";
+  #   src = fetchFromGitHub {
+  #     owner = "julian";
+  #     repo = "tree-sitter-lean";
+  #     rev = version;
+  #     sha256 = "sha256-U4ObSk4mtpp/gq8fnDQOKFfrgZ8/SuF6v5UhqxyAhWk=";
+  #   };
+  #   copyPaths = [ "grammar" ];
+  #   # unit tests fail on latest tree-sitter-cli
+  #   doCheck = false;
+  #   meta.license = lib.licenses.mit;
+  # };
   julia.tree-sitter = tspm.grammar rec {
     version = "12ea597262125fc22fd2e91aa953ac69b19c26ca";
     src = fetchFromGitHub {
