@@ -15,7 +15,7 @@ unpackPhase() {
 
   cp --no-preserve=mode "$src/$subpath/package.json" "$tsDir/$subpath/package.json"
   cp "$src/$subpath/grammar.js" "$tsDir/$subpath/grammar.js"
-  cp --recursive --no-preserve=mode "$src/$subpath/src" "$tsDir/$subpath/src"
+  cp --recursive --no-preserve=mode "$src/$subpath/src" "$tsDir/$subpath/src" || true
 
   for path in $copyPaths; do
     cp --recursive "$src/$path" "$tsDir/$path"
@@ -68,12 +68,12 @@ installPhase() {
   case "$format" in
     "src")
       mkdir "$out"
-      cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$out"/
+      cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$src"/COPYING* "$out"/
       cp -r "$tsDir/$subpath"/src/* "$out"/
       ;;
     "wasm")
       mkdir "$out"
-      cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$out"/
+      cp "$src"/LICENSE* "$src"/license* "$src"/NOTICE* "$src"/COPYING* "$out"/
       cp "$tsDir/$subpath/"*.wasm "$out"/parser.wasm
       ;;
     *)
