@@ -80,7 +80,25 @@ a consistent style in the `grammar.js`. A common configuration for this in
 Contributors then may run `npm run format` to format `grammar.js`. Proper
 formatting can be checked in CI with `npm run format-check`.
 
+### Licensing
+
+> Disclaimer: I am not a lawyer and this is not legal advice.
+
+Please license your grammar! The GitHub [licensing docs][licensingdocs] state
+
+> You're under no obligation to choose a license. However, without a license,
+> the default copyright laws apply, meaning that you retain all rights to your
+> source code and no one may reproduce, distribute, or create derivative works
+> from your work.
+
+TSPM is not allowed to package your grammar if you do not declare a license
+(or if your declared license prohibits distribution).
+
+The MIT license is overwhelmingly popular among grammar repositories but other
+good choices exist. "Official" grammars tend to follow the language's license.
+
 [elixir-gitattributes]: https://github.com/elixir-lang/tree-sitter-elixir/blob/b4027d7cfc96935b50878bdf9faf80bd64ac73cf/.gitattributes
 [elixir-sep1]: https://github.com/elixir-lang/tree-sitter-elixir/blob/b4027d7cfc96935b50878bdf9faf80bd64ac73cf/grammar.js#L840-L842
 [prettier]: https://prettier.io/
 [elixir-format]: https://github.com/elixir-lang/tree-sitter-elixir/blob/b4027d7cfc96935b50878bdf9faf80bd64ac73cf/package.json#L12-L24
+[licensingdocs]: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository#choosing-the-right-license
