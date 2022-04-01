@@ -581,7 +581,16 @@ in tspm.formatGrammars {
       repo = "tree-sitter-solidity";
       rev = version;
       sha256 = "sha256-rgttlYMWW/ji+2kGZKyPRLx52NXoyupP+7ZNFnRQuBE=";
-      # sha256 = lib.fakeSha256;
+    };
+    meta.license = lib.licenses.mit;
+  };
+  comment.stsewd = tspm.grammar rec {
+    version = "a37ca370310ac6f89b6e0ebf2b86b2219780494e";
+    src = fetchFromGitHub {
+      owner = "stsewd";
+      repo = "tree-sitter-comment";
+      rev = version;
+      sha256 = "sha256-wiFY2uMNv8Wet3qKh0bSe8FSO1sjGu1uTOBxnt/HHHg=";
     };
     meta.license = lib.licenses.mit;
   };
@@ -594,7 +603,6 @@ in tspm.formatGrammars {
   # * ledger.cbarrete - does not include a license
   # * svelte.himujjal - has an NPM dependency on tree-sitter-html
   # * zig.maxxnino - does not include a license
-  # * comment.stsewd - does not include a license
   # * llvm.benwilliamgraham - does not include a license
   # * dart.usernobody14 - does not include a license
 }
