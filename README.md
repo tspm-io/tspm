@@ -6,12 +6,13 @@ _An open-source [tree-sitter][tree-sitter] package manager_
 
 ### Status
 
-TSPM is just starting out!
-
-Currently TSPM is a small set of grammars hosted in
+Currently, TSPM is a medium-size collection of grammars hosted in
 
 - an interactive [online playground][playground]
 - a [package-registry](#registry)
+
+It's unstable for now and entirely focused on preparing packages for use in
+[Helix][helix]. See the scope docs for more information.
 
 ### Registry
 
