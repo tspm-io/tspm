@@ -594,15 +594,42 @@ in tspm.formatGrammars {
     };
     meta.license = lib.licenses.mit;
   };
+  ledger.cbarrete = tspm.grammar rec {
+    version = "1050a25df55a62878102d10e524b5184b316b7ad";
+    src = fetchFromGitHub {
+      owner = "cbarrete";
+      repo = "tree-sitter-ledger";
+      rev = version;
+      sha256 = "sha256-3fXjzF9yna4tRdACDDa8oxN+ZbRfx08UDBUtJXnKO2I=";
+    };
+    meta.license = lib.licenses.mit;
+  };
+  zig.maxxnino = tspm.grammar rec {
+    version = "4cff36421dae9c05388b86cd64d2bab4b9ed6676";
+    src = fetchFromGitHub {
+      owner = "maxxnino";
+      repo = "tree-sitter-zig";
+      rev = version;
+      sha256 = "sha256-jLZxcC7FYGKEqbumfzu48lvxeSCL6YnHdzdIt40DP00=";
+    };
+    meta.license = lib.licenses.mit;
+  };
+  llvm.benwilliamgraham = tspm.grammar rec {
+    version = "e9948edc41e9e5869af99dddb2b5ff5cc5581af6";
+    src = fetchFromGitHub {
+      owner = "benwilliamgraham";
+      repo = "tree-sitter-llvm";
+      rev = version;
+      sha256 = "sha256-M7smrjU+7L9a2kpz0wM+G+YQGTQaqsVL/Q+OCKlPpzQ=";
+    };
+    meta.license = lib.licenses.mit;
+  };
 
   # Grammars TODO:
   # * toml.ikatyang - needs quite a few npm dependencies but could be forked
   #   and changed to avoid this
   # * cpp.tree-sitter - requires tree-sitter-c via npm without a lockfile
-  # * twig.eirabben - does not include a license
-  # * ledger.cbarrete - does not include a license
   # * svelte.himujjal - has an NPM dependency on tree-sitter-html
-  # * zig.maxxnino - does not include a license
-  # * llvm.benwilliamgraham - does not include a license
-  # * dart.usernobody14 - does not include a license
+  # * twig.eirabben - does not include a license (https://github.com/eirabben/tree-sitter-twig/issues/3)
+  # * dart.usernobody14 - does not include a license (https://github.com/UserNobody14/tree-sitter-dart/issues/26)
 }
