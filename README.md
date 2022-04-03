@@ -192,7 +192,6 @@ Current space usage: 21MB.
 
 Looking for more docs?
 
-* [adding new grammars][add-new-grammar]
 * [tips for grammar authors][tips]
 
 ### TODO
@@ -218,6 +217,5 @@ TSPM is licensed under the MPL-2.0. See the [LICENSE](./LICENSE) for details.
 [nixpkgs]: https://github.com/NixOS/nixpkgs
 [ts-930]: https://github.com/tree-sitter/tree-sitter/issues/930
 [do-spaces]: https://www.digitalocean.com/blog/spaces-now-includes-cdn
-[tips]: ./grammar-author-tips.md
-[add-new-grammar]: ./add-new-grammar.md
+[tips]: ./docs/grammar-author-tips.md
 [ts-iex]: https://github.com/elixir-lang/tree-sitter-iex
