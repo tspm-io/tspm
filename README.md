@@ -79,6 +79,28 @@ $ cc -shared -o elixir.so *.o
 
 Now the `elixir.so` shared object is ready for use!
 
+### Packaging a new grammar
+
+Each new grammar needs an entry in `grammars.nix` and its versions locked
+in `grammar-lock.json`. Say we're packaging
+[`elixir-lang/tree-sitter-iex`][ts-iex]. First, we'll add a section to
+`grammars.nix` with the license:
+
+```nix
+{
+  # ..
+  iex.elixir-lang = tspm.grammar { meta.license = lib.licenses.asl20; };
+}
+```
+
+Then we'll add the package to the lockfile:
+
+```
+$ nix run .#lock -- elixir-lang iex
+```
+
+Use `nix flake check` to verify that the grammars pass tests.
+
 ### Motivation
 
 Currently, tree-sitter grammars are distributed using git repositories, which
@@ -188,3 +210,4 @@ TSPM is licensed under the MPL-2.0. See the [LICENSE](./LICENSE) for details.
 [do-spaces]: https://www.digitalocean.com/blog/spaces-now-includes-cdn
 [tips]: ./grammar-author-tips.md
 [add-new-grammar]: ./add-new-grammar.md
+[ts-iex]: https://github.com/elixir-lang/tree-sitter-iex

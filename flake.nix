@@ -50,11 +50,19 @@
             format = "src.tar.gz";
             metadata = true;
           };
+          lock = tspm.lockScript;
         });
 
       defaultApp = forAllSystems (system: {
         type = "app";
         program = "${self.packages.${system}.playground}/run.sh";
+      });
+
+      apps = forAllSystems (system: {
+        lock = {
+          type = "app";
+          program = "${self.packages.${system}.lock}";
+        };
       });
 
       devShells = forAllSystems (system:

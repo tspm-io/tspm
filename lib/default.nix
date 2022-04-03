@@ -1,21 +1,29 @@
 { system, tree-sitter, nodejs, emscripten, httplz, nixUnstable, gnutar, stdenv
 , lib, fetchurl, linkFarm, callPackage, writeTextFile, writeShellScript
-, runCommand }: rec {
+, runCommand, fetchFromGitHub, nix-prefetch-github, jq }: rec {
   maintainers = import ./maintainers.nix;
 
   abiVersion = "13";
 
   # TODO:
   # - cd into subpath
-  # - desired ABI
   # - npm dependencies / submodules
-  grammar = grammar: language: owner:
+  grammar = grammar: language: owner: lock:
     { format, ... }:
-    stdenv.mkDerivation rec {
-      inherit system format tree-sitter language;
+    let
+      lockKey = grammar.follows or "${owner}/${language}";
+      lockEntry = builtins.getAttr lockKey lock;
+      defaultSrc = assert lockEntry.type == "github";
+        fetchFromGitHub {
+          inherit (lockEntry) owner repo;
+          rev = lockEntry.revision;
+          sha256 = lockEntry.integrity;
+        };
+      src = grammar.src or defaultSrc;
+    in stdenv.mkDerivation rec {
+      inherit system format tree-sitter language src;
       pname = "grammar-${language}-${owner}-${format}";
-      version = grammar.version;
-      src = grammar.src;
+      version = lockEntry.revision;
       subpath = grammar.subpath or ".";
       copyPaths = grammar.copyPaths or [ ];
       preGenerate = grammar.preGenerate or "true";
@@ -34,10 +42,11 @@
       linkFarm "all-grammars" (grammarLinks grammars opts);
 
   formatGrammars = grammars:
-    lib.lists.flatten (builtins.map (language:
+    let lock = builtins.fromJSON (builtins.readFile ../grammar-lock.json);
+    in lib.lists.flatten (builtins.map (language:
       builtins.map (owner: {
         inherit language owner;
-        builder = grammars.${language}.${owner} language owner;
+        builder = grammars.${language}.${owner} language owner lock;
       }) (builtins.attrNames grammars.${language}))
       (builtins.attrNames grammars));
 
@@ -127,4 +136,15 @@
         }
       ] ++ (grammarLinks wasmGrammars { format = "wasm"; });
     in copyFarm "tree-sitter-playground" entries;
+
+  lockScript = writeShellScript "lock-script" ''
+    set -e
+    ${nix-prefetch-github}/bin/nix-prefetch-github --json --no-prefetch --no-fetch-submodules "$1" "tree-sitter-$2" > .tmp-lock.json 2>/dev/null
+    mv grammar-lock.json grammar-lock.json.bak
+    ${jq}/bin/jq \
+      --slurpfile lock .tmp-lock.json \
+      --arg key "$1/$2" \
+      '.[$key] = {type: "github", owner: $lock[0].owner, repo: $lock[0].repo, revision: $lock[0].rev, integrity: $lock[0].sha256}' \
+      grammar-lock.json.bak > grammar-lock.json
+  '';
 }
