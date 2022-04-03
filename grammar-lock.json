@@ -66,8 +66,8 @@
     "type": "github",
     "owner": "tree-sitter",
     "repo": "tree-sitter-c-sharp",
-    "revision": "5b6ae1f88e741b9ed738891ad1362fb9f2041671",
-    "integrity": "K9fPXErqZgFHXWIi4kikGyDf7ou+ZKHYox0er76n4fo="
+    "revision": "53a65a908167d6556e1fcdb67f1ee62aac101dda",
+    "integrity": "ouYSeWYEJW6nPwE1YP7G19AfejBtED+YPffWiQXwN1c="
   },
   "tree-sitter/go": {
     "type": "github",
