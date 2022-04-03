@@ -186,7 +186,7 @@ The current pricing model for Spaces:
 | 250GB   | 1TB               | $0.02/GB             | $0.01/GB                  | $5.00     |
 ```
 
-Current space usage: 12.4MB.
+Current space usage: 21MB.
 
 ### Other docs
 
@@ -194,6 +194,16 @@ Looking for more docs?
 
 * [adding new grammars][add-new-grammar]
 * [tips for grammar authors][tips]
+
+### TODO
+
+* Use CI runners with more resources to accommodate more grammars
+* Allow locking NPM dependencies via the `grammar-lock.json` file
+* Add an app that writes a JSON index of all packaged grammars
+    * Write that index to the gh-pages branch and use `jq` to accumulate
+      packages as they are generated
+* Write a landing page for TSPM which allows one to search through the index
+  and copy `pkgs.tspm.io` links
 
 ### License
 
