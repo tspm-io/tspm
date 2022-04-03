@@ -36,6 +36,26 @@ use `-diff`, like so:
 Which prevents changes to the given files from being shown when using
 `git diff` or in verbose commits.
 
+### Unit testing
+
+`tree-sitter-cli` has a `test` command for running unit tests. The
+tree-sitter docs have a good [section][tstestsection] on it. A lesser-known
+flag on `tree-sitter test` is the `-u` option. It updates any files with
+failing tests in place. This updated reformats the tests into a consistent
+style.
+
+I recommend **never** writing expected unit test results by hand. Instead,
+use the playground to inspect the syntax tree for a test case and then use
+`tree-sitter test -u` to update the test file.
+
+### Integration testing
+
+Many grammar repositories run _integration_ tests: tests of the parser's
+pass/fail rate against an established code-base in the language. Large
+libraries and frameworks are good targets for these integration tests.
+See the `tree-sitter-elixir` integration test
+[script][elixir-integration-tests] for an example.
+
 ### The `sep1` rule
 
 Languages often-times have syntax that supports a set of comma-separated
@@ -102,3 +122,5 @@ good choices exist. "Official" grammars tend to follow the language's license.
 [prettier]: https://prettier.io/
 [elixir-format]: https://github.com/elixir-lang/tree-sitter-elixir/blob/b4027d7cfc96935b50878bdf9faf80bd64ac73cf/package.json#L12-L24
 [licensingdocs]: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository#choosing-the-right-license
+[tstestsection]: https://tree-sitter.github.io/tree-sitter/creating-parsers#command-test
+[elixir-integration-tests]: https://github.com/elixir-lang/tree-sitter-elixir/blob/c68c4ad72f58014e4c303f1c8f982e503404f481/scripts/integration_test.sh
