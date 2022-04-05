@@ -376,5 +376,12 @@
     "repo": "tree-sitter-llvm",
     "revision": "e9948edc41e9e5869af99dddb2b5ff5cc5581af6",
     "integrity": "M7smrjU+7L9a2kpz0wM+G+YQGTQaqsVL/Q+OCKlPpzQ="
+  },
+  "alex-pinkus/swift": {
+    "type": "github",
+    "owner": "alex-pinkus",
+    "repo": "tree-sitter-swift",
+    "revision": "21bb67e87a2a2a0b13853484b8c4bdaf19a04a1f",
+    "integrity": "N+HKq8OP1yCu/qB/u3ekay0eRERuwJtgHoiPTT8sp44="
   }
 }

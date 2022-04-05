@@ -152,6 +152,7 @@ in tspm.formatGrammars {
   ledger.cbarrete = tspm.grammar { meta.license = lib.licenses.mit; };
   zig.maxxnino = tspm.grammar { meta.license = lib.licenses.mit; };
   llvm.benwilliamgraham = tspm.grammar { meta.license = lib.licenses.mit; };
+  swift.alex-pinkus = tspm.grammar { meta.license = lib.licenses.mit; };
 
   # Grammars TODO:
   # * toml.ikatyang - needs quite a few npm dependencies but could be forked
